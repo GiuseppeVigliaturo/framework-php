@@ -1,0 +1,16 @@
+{
+    "name": "vigli/framework-php",
+    "authors": [
+        {
+            "name": "giuviglia94",
+            "email": "vigliaturo94@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            
+            "app\\":"./"
+        }
+    },
+    "require": {}
+}
