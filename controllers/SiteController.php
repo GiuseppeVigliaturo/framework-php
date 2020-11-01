@@ -2,8 +2,8 @@
 namespace app\controllers;
 
 use app\core\Application;
-
-class SiteController{
+use app\core\Controller;
+class SiteController extends Controller{
 
     //il motivo per cui ritorniamo una view e che possiamo passargli un parametro
     public function home()
@@ -11,7 +11,7 @@ class SiteController{
         $params = [
             "name" => "Giuseppe Vigliaturo"
         ];
-        return Application::$app->router->renderView('home', $params);
+        return $this->render('home', $params);
     }
   
   

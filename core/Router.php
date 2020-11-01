@@ -34,8 +34,18 @@ class Router{
             return $this->renderView("_404");
             
         }
+        
         if (is_string($callback)) {
             return $this->renderView($callback);
+        }
+        /*se callback è un array prendo il primo
+        elemento che corrsponde al controller e ne creo 
+        una istanza
+        */
+        if (is_array($callback)) {
+            $instance = new $callback[0]();
+            $callback[0]=$instance;
+            //in questo modo il primo elemento è ora un oggetto
         }
         return call_user_func($callback);
     }
