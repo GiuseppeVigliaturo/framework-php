@@ -3,6 +3,7 @@ namespace app\controllers;
 
 use app\core\Application;
 use app\core\Controller;
+use app\core\Request;
 class SiteController extends Controller{
 
     //il motivo per cui ritorniamo una view e che possiamo passargli un parametro
@@ -20,7 +21,7 @@ class SiteController extends Controller{
         return Application::$app->router->renderView('contact');
     }
 
-    public function handleContact(){
-        return "Handle submitted Data";
+    public function handleContact(Request $request){
+        $body = $request->getBody;
     }
 }

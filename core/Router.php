@@ -29,6 +29,7 @@ class Router{
         $method = $this->request->getMethod();
         
         $callback = $this->routes[$method][$path] ?? false;
+        //var_dump($callback);
         if ($callback === false) {
             $this->response->setStatusCode(404);
             return $this->renderView("_404");
@@ -47,7 +48,10 @@ class Router{
             $callback[0]=$instance;
             //in questo modo il primo elemento è ora un oggetto
         }
-        return call_user_func($callback);
+        //nel caso del controller creo una istanza del SiteController
+        //e gli passo la request inizializzata nel costruttore del router
+        // con la request che gli passo abbiamo i dati che inviamo
+        return call_user_func($callback, $this->request);
     }
 
 
