@@ -44,9 +44,11 @@ class Router{
         una istanza
         */
         if (is_array($callback)) {
-            $instance = new $callback[0]();
-            $callback[0]=$instance;
-            //in questo modo il primo elemento è ora un oggetto
+            
+            Application::$app->controller = new $callback[0]();
+            //posso ora accedere al controller
+            $callback[0] = Application::$app->controller;
+            
         }
         //nel caso del controller creo una istanza del SiteController
         //e gli passo la request inizializzata nel costruttore del router
@@ -65,10 +67,11 @@ class Router{
 
     protected function layoutContent(){
         
+        $layout = Application::$app->controller->layout;
         //comincio a catturare l'output nel buffer
         ob_start();
         //catturo il layout
-        include_once Application::$ROOT_DIR."/views/layouts/main.php";
+        include_once Application::$ROOT_DIR."/views/layouts/$layout.php";
         //ritorno ciò che ho catturato pulendo il buffer
         return ob_get_clean();
     }
