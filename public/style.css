@@ -1,3 +1,6 @@
 .container{
     margin-top: 100px;
 }
+.invalid-feedback{
+    border: 1px red solid;
+}

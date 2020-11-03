@@ -13,7 +13,7 @@
 </head>
 
 <body>
-   <h1>Auth</h1>
+    <h1>Auth</h1>
 
     <div class="container">
 
