@@ -9,7 +9,7 @@ class m0002_add_password
     {
 
         $db = \app\core\Application::$app->db;
-        $SQL = "ALTER TABLE ADD_COLUMN password varchar(255) NOT NULL;";
+        $SQL = "ALTER TABLE users ADD password varchar(255);";
         $db->pdo->exec($SQL);
     }
 

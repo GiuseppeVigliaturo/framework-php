@@ -8,4 +8,9 @@ class Response{
         //restituisce o setta il codice di risposta http
         http_response_code($code);
     }
+
+    public function redirect($url)
+    {
+        header('Location: '.$url);
+    }
 }

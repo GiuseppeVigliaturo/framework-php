@@ -9,6 +9,7 @@ abstract class Model{
     public const RULE_MIN = 'min';
     public const RULE_MAX = 'max';
     public const RULE_MATCH = 'match';
+    public const RULE_UNIQUE = 'unique';
 
     public function loadData($data){
 
@@ -29,6 +30,16 @@ abstract class Model{
     //questa verrà implementata nella classe figlia
     abstract public function rules():array;
 
+    public function labels(): array
+    {
+        return [];
+    }
+
+    public function getLabel($attribute)
+    {
+        return $this->labels()[$attribute] ?? $attribute;
+    }
+    
     public array $errors = [];
 
     public function validate()
@@ -63,7 +74,23 @@ abstract class Model{
                 }
                 //{$rule['match']} è il nome dell'attributo quindi password mentre $value è la password di conferma
                 if ($ruleName === self::RULE_MATCH && $value !== $this->{$rule['match']}) {
+                   $rule['match'] = $this->getLabel($rule['match']);
                     $this->addError($attribute, self::RULE_MATCH, $rule);
+                }
+
+                if ($ruleName === self::RULE_UNIQUE) {
+                    
+                    $className =$rule['class'];
+                    $uniqueAttr = $rule['attribute'] ??$attribute;
+                    $tablename = $className::tableName();
+                    $statement = Application::$app->db->prepare("SELECT * FROM $tablename WHERE $uniqueAttr=:attr");
+                    $statement->bindValue(":attr", $value);
+                    $statement->execute();
+                    $record = $statement->fetchObject();
+                    if ($record) {
+                        $this->addError($attribute, self::RULE_UNIQUE,["field"=>$this->getLabel($attribute)]);
+                    }
+
                 }
             }
         }
@@ -92,8 +119,10 @@ abstract class Model{
     self::RULE_EMAIL => 'This field must be valid email address',
     self::RULE_MIN => 'Min length is {min}',
     self::RULE_MAX => 'Max length is {max}',
-    self::RULE_MATCH => 'This field must be the same as {match}'
-        ];
+    self::RULE_MATCH => 'This field must be the same as {match}',
+    self::RULE_UNIQUE => 'User with this {field} already exists'
+
+];
     }
 
     public function hasError($attribute){

@@ -8,6 +8,7 @@ class Application
     public Request $request;
     public Response $response;
 
+    public Session $session;
     public Database $db;
     public static Application $app;
     public Controller $controller;
@@ -21,7 +22,7 @@ class Application
         //in volta una nuova classe
         self::$app = $this;
 
-        
+        $this->session= new Session();
         $this->request = new Request();
         $this->response = new Response();
         /*
