@@ -133,4 +133,9 @@ abstract class Model{
     {
         return $this->errors[$attribute][0] ?? false;
     }
+
+    public function addErrorLogin(string $attribute, string $message){
+
+        $this->errors[$attribute][] = $message;
+    }
 }

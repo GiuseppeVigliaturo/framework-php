@@ -3,6 +3,7 @@
 use app\controllers\AuthController;
 use app\controllers\SiteController;
 use app\core\Application;
+use app\models;
 require_once __DIR__."/../vendor/autoload.php";
 //dopo aver importato la classe autoload 
 // con use evito di ripetere ogni volta il percorso assoluto 
@@ -15,6 +16,7 @@ $dotenv->load();
 
 //configurazione del database
 $config = [
+    'userClass'=> app\models\RegisterModel::class,
     'db'=>[
         'dsn'=> $_ENV['DB_DSN'],
         'user' => $_ENV['DB_USER'],
@@ -33,5 +35,6 @@ $app->router->get('/login',[AuthController::class,'login']);
 $app->router->post('/login', [AuthController::class, 'login']);
 $app->router->get('/register', [AuthController::class, 'register']);
 $app->router->post('/register', [AuthController::class, 'register']);
+$app->router->get('/logout', [AuthController::class, 'logout']);
 
 $app-> run();

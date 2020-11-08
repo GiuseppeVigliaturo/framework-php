@@ -1,9 +1,8 @@
 <?php
 
 namespace app\models;
-use app\core\DbModel;
-
-class RegisterModel extends DbModel
+use app\core\UserModel;
+class RegisterModel extends UserModel
 {
     const STATUS_ACTIVE =1 ;
     const STATUS_INACTIVE =0 ;
@@ -21,6 +20,11 @@ class RegisterModel extends DbModel
     {
         return 'users';
     }
+
+    //questo metodo servirà a conoscere qual è la chiave primaria dell'oggetto che chiama il metodo
+    public function primaryKey(): string{
+        return 'id';
+    }
     public function save(){
         //la password deve essere cifrata
 
@@ -29,6 +33,7 @@ class RegisterModel extends DbModel
         //l'email deve essere unica
         return parent::save();
     }
+
 
     public function rules(): array 
     {
@@ -57,6 +62,11 @@ class RegisterModel extends DbModel
             'password' => 'Password',
             'confirmPassword' => 'Confirm Password'
         ];
+    }
+
+    public function getDisplayName(): string{
+
+        return $this->firstname.' '. $this->lastname;
     }
     
 }

@@ -53,7 +53,7 @@ class Router{
         //nel caso del controller creo una istanza del SiteController
         //e gli passo la request inizializzata nel costruttore del router
         // con la request che gli passo abbiamo i dati che inviamo
-        return call_user_func($callback, $this->request);
+        return call_user_func($callback, $this->request,$this->response);
     }
 
 

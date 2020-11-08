@@ -12,6 +12,7 @@ class m0001_initial {
         email varchar(255), 
         firstname varchar(255), 
         lastname varchar(255),
+        status int,
         created_at timestamp DEFAULT current_timestamp);";
         $db->pdo->exec($SQL);
 

@@ -1,13 +1,9 @@
-<form action="" method="POST">
+<?php $form =  \app\core\form\Form::begin(" ", "post") ?>
 
-    <div class="form-group">
-        <label for="email">Email</label>
-        <input name="email" type="email" class="form-control">
-    </div>
-    <div class="form-group">
-        <label for="password">Password</label>
-        <input name="password" type="password" class="form-control">
-    </div>
 
-    <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+<?php echo $form->field($model, 'email') ?>
+<?php echo $form->field($model, 'password')->passwordField() ?>
+
+<button type="submit" class="btn btn-primary">Submit</button>
+
+<?php \app\core\form\Form::end() ?>

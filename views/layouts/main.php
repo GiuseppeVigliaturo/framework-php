@@ -1,5 +1,9 @@
 <?php
- use app\core\Application;
+
+use app\core\Application;
+
+//var_dump(Application::$app->user);
+
 ?>
 
 <!doctype html>
@@ -31,24 +35,33 @@
                 </li>
 
             </ul>
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="/login">Login</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/register">Register</a>
-                </li>
+            <?php if (Application::isGuest()) :  ?>
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/login">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/register">Register</a>
+                    </li>
 
-            </ul>
-
+                </ul>
+            <?php else : ?>
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/logout"><?php echo " " ?>
+                            (LOGOUT)
+                        </a>
+                    </li>
+                </ul>
+            <?php endif; ?>
         </div>
     </nav>
 
     <div class="container">
-        <?php if (Application::$app->session->getFlash('success')): ?>
-    <div class="alert alert-success">
-            <?php echo Application::$app->session->getFlash('success')?>
-    </div>
+        <?php if (Application::$app->session->getFlash('success')) : ?>
+            <div class="alert alert-success">
+                <?php echo Application::$app->session->getFlash('success') ?>
+            </div>
         <?php endif; ?>
         {{content}}
 
