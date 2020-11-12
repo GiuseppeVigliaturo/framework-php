@@ -14,7 +14,7 @@ class Application
     public Database $db;
     public static Application $app;
     public Controller $controller;
-    public ?DbModel $user;//mettere il punto interrogativo significa che può essere null
+    public $user;//mettere il punto interrogativo significa che può essere null
 
     public function __construct($rootPath,array $config)
     {
@@ -45,7 +45,7 @@ class Application
         //una volta recuperata la classe esterna al core dall'array di configurazione
         //chiamo il metodo findOne nel quale specifichiamo che l'id deve corrispondere 
         //al valore recuperato dalla sessione in questo modo posso accedervi da qualunque pagina
-        //dell'applicativo
+        //dell'applicativo in questo modo il core è riutilizzabile
         $primaryValue = $this->session->get('user');
         if ($primaryValue) {
             $primaryKey = $this->userClass::primaryKey();

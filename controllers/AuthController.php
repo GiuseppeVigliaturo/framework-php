@@ -36,8 +36,10 @@ class AuthController extends Controller {
              */
              //carico i dati inviati dal form nel Model
             $registerModel -> loadData($request->getBody());
+            
 
-            /**se la validazione è andata a buon fine allora registro i dati */
+            /**se la validazione è andata a buon e ho registrato 
+             * correttamente i dati visualizzo un messaggio */
             if ($registerModel->validate() && $registerModel->save()) {
                Application::$app->session->setFlash('success','thanks for registering');
                Application::$app->response->redirect('/');

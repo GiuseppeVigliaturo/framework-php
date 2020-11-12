@@ -30,10 +30,10 @@ abstract class Model{
     //questa verrà implementata nella classe figlia
     abstract public function rules():array;
 
-    public function labels(): array
-    {
-        return [];
-    }
+    // public function labels(): array
+    // {
+    //     return [];
+    // }
 
     public function getLabel($attribute)
     {
@@ -48,7 +48,7 @@ abstract class Model{
         foreach ($this->rules() as $attribute => $rules) {
             //attenzione ad ogni attributo corrisponde una o più regole per questo c'è rules
             $value =$this->{$attribute};
-            //value sono i campi del form
+            //value sono i campi del form che sono stati valorizzati quindi contengono i dati dell'utente
             foreach ($rules as $rule) {
                 $ruleName = $rule;
                 if (!is_string($ruleName)) {
@@ -81,11 +81,14 @@ abstract class Model{
                 if ($ruleName === self::RULE_UNIQUE) {
                     
                     $className =$rule['class'];
-                    $uniqueAttr = $rule['attribute'] ??$attribute;
+                    //se non è presente una proprietà attribute nell'array rule 
+                    //allora prendo l'attributo corrente email in questo caso
+                    $uniqueAttr = $rule['attribute'] ?? $attribute;
                     $tablename = $className::tableName();
                     $statement = Application::$app->db->prepare("SELECT * FROM $tablename WHERE $uniqueAttr=:attr");
                     $statement->bindValue(":attr", $value);
                     $statement->execute();
+                    //se esiste un record quindi una mail uguale allora sollevo un errore
                     $record = $statement->fetchObject();
                     if ($record) {
                         $this->addError($attribute, self::RULE_UNIQUE,["field"=>$this->getLabel($attribute)]);
@@ -95,6 +98,7 @@ abstract class Model{
             }
         }
 
+        //ritorna true se non ci sono errori altrimenti false
         return empty($this->errors);
     }
 
@@ -120,7 +124,7 @@ abstract class Model{
     self::RULE_MIN => 'Min length is {min}',
     self::RULE_MAX => 'Max length is {max}',
     self::RULE_MATCH => 'This field must be the same as {match}',
-    self::RULE_UNIQUE => 'User with this {field} already exists'
+    self::RULE_UNIQUE => 'User with {field} already exists'
 
 ];
     }

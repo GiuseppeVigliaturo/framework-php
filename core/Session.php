@@ -5,11 +5,13 @@ namespace app\core;
 class Session {
     protected const FLASH_KEY= 'flash_messages';
     public function __construct(){
-        //session_start();
+        session_start();
         $flashMessages = $_SESSION[self::FLASH_KEY] ?? [];
-        foreach ($flashMessages as $key => $flashMessage) {
-            
-            $flashMeassage['remove']= true;
+        foreach ($flashMessages as &$flashMessage) {
+            //appena creo una sessione e aggiungo un elemento in essa setto
+            //il valore della chiave remove da false a true in questo modo posso 
+            //eliminare il messaggio nel destruct una volta che la sessione termina
+            $flashMessage['remove']= true;
         }
         $_SESSION[self::FLASH_KEY]= $flashMessages;
     }
@@ -45,6 +47,7 @@ class Session {
 
     public function __destruct()
     {
+        /**rimuovo tutti i messaggi salvati nella sessione al termine della request */
         $flashMeassages = $_SESSION[self::FLASH_KEY] ?? [];
         foreach ($flashMeassages as $key => $flashMeassage) {
 
@@ -52,6 +55,7 @@ class Session {
                 unset($flashMeassages[$key]);
             }
         }
+        /** */
         $_SESSION[self::FLASH_KEY] = $flashMeassages;
     }
 

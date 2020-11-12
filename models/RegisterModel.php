@@ -14,7 +14,7 @@ class RegisterModel extends UserModel
     public int $status = self::STATUS_INACTIVE;
     public string $password = '';
     public string $confirmPassword = '';
-
+//a riga 24 di Model.php salvo i valori inseriti nel form e valorizzo le variabili qui sopra
 
     public function tableName(): string
     {
@@ -47,6 +47,9 @@ class RegisterModel extends UserModel
         ];
     }
 
+    /**Ritorno solo gli attributi che andranno effetivamente salvati nel db
+     * ad esempio confirmPassword non andrà salvato per questo non c'è
+     */
     public function attributes(): array
     {
         return ['firstname','lastname','email','password','status'];
@@ -58,7 +61,7 @@ class RegisterModel extends UserModel
 
             'firstname'=> 'First name',
             'lastname' => 'Last name',
-            'email' => 'Email',
+            'email' => 'Your Email',
             'password' => 'Password',
             'confirmPassword' => 'Confirm Password'
         ];

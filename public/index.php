@@ -1,14 +1,18 @@
 <?php
 
+// con use evito di ripetere ogni volta il percorso assoluto 
+//quando istanzio una classe
 use app\controllers\AuthController;
 use app\controllers\SiteController;
 use app\core\Application;
 use app\models;
-require_once __DIR__."/../vendor/autoload.php";
+
 //dopo aver importato la classe autoload 
-// con use evito di ripetere ogni volta il percorso assoluto 
-//quando istanzio una classe
-/**carico i dati nel file .env */
+require_once __DIR__."/../vendor/autoload.php";
+
+
+/**carico i dati dal file .env */
+//il pacchetto scaricato tramite composer è "vlucas/phpdotenv": "^5.2"
 $dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__));
 $dotenv->load();
 

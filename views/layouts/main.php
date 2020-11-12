@@ -1,8 +1,7 @@
 <?php
 
 use app\core\Application;
-
-//var_dump(Application::$app->user);
+use app\models\RegisterModel;
 
 ?>
 
@@ -48,7 +47,7 @@ use app\core\Application;
             <?php else : ?>
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item active">
-                        <a class="nav-link" href="/logout"><?php echo " " ?>
+                        <a class="nav-link" href="/logout"><?php echo "Benvenuto ". Application::$app->user->getDisplayName() ?>
                             (LOGOUT)
                         </a>
                     </li>
