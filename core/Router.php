@@ -1,6 +1,7 @@
 <?php
 
 namespace app\core;
+use app\core\exception\NotFoundException;
 class Router{
 
    
@@ -34,8 +35,8 @@ class Router{
         //var_dump($callback);
         //se la funzione non esiste setto lo stato di errore 404
         if ($callback === false) {
-            $this->response->setStatusCode(404);
-            return $this->renderView("_404");
+            
+            throw new NotFoundException();
             
         }
         //se esiste ed è una singola parola allora vengo reindirizzato alla view corrispondente
@@ -51,9 +52,18 @@ class Router{
             //esempio:
             //prendo solo Sitecontroller::class
             //$app->router->get('/', [SiteController::class, 'home']);
-            Application::$app->controller = new $callback[0]();
+            
+            $controller = new $callback[0]();
+            //Middleware: quando creiamo una istanza del controller possiamo 
+            //anche indicare qual è l'azione per quel controller
+            Application::$app->controller = $controller;
+            $controller->action =  $callback[1];
             //posso ora accedere al controller
-            $callback[0] = Application::$app->controller;
+            $callback[0] = $controller;
+            foreach ($controller->getMiddlewares() as $middleware) {
+                $middleware->execute();
+            }
+            
             
         }
         //nel caso del controller creo una istanza del SiteController
@@ -90,8 +100,11 @@ class Router{
 
     protected function layoutContent()
     {
-
-        $layout = Application::$app->controller->layout;
+        $layout = Application::$app->layout;
+        if (Application::$app->controller->layout) {
+            $layout = Application::$app->controller->layout;
+        }
+        
         //comincio a catturare l'output nel buffer
         ob_start();
         //catturo il layout

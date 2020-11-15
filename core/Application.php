@@ -3,6 +3,7 @@ namespace app\core;
 
 class Application
 {
+    public string $layout ='main';
 
     public $userClass;
     public static string $ROOT_DIR;
@@ -13,7 +14,7 @@ class Application
     public Session $session;
     public Database $db;
     public static Application $app;
-    public Controller $controller;
+    public ?Controller $controller = null;
     public $user;//mettere il punto interrogativo significa che può essere null
 
     public function __construct($rootPath,array $config)
@@ -59,7 +60,15 @@ class Application
 
     public function run()
     {
-       echo $this->router->resolve();
+        try {
+            echo $this->router->resolve();
+        } catch (\Exception $e) {
+            $this->response->setStatusCode($e->getCode());
+            echo $this->router->renderView('_error',[
+                'exception' => $e
+            ]);
+        }
+       
     }
 
     public function setController(\app\core\Controller $controller){
